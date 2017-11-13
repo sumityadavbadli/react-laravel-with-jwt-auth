@@ -1,9 +1,462 @@
+/* ************************************************************************* */
+/* ------------------------- Importing google fonts ------------------------ */
+/* ************************************************************************* */
 
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+/* **** Lato Font **** */
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Lato Italic'), local('Lato-Italic'), url('../fonts/vendor/google-fonts/lato/lato-latin-italic-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
 
-// Variables
-@import "variables";
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url('../fonts/vendor/google-fonts/lato/lato-latin-italic-700.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
 
-// Bootstrap
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url('../fonts/vendor/google-fonts/lato/lato-latin-normal-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/vendor/google-fonts/lato/lato-latin-normal-700.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* **** Montserrat **** */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Montserrat Light'), local('Montserrat-Light'), url('../fonts/vendor/google-fonts/Montserrat/Montserrat-latin-normal-300.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'), url('../fonts/vendor/google-fonts/Montserrat/Montserrat-latin-normal-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url('../fonts/vendor/google-fonts/Montserrat/Montserrat-latin-normal-600.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* **** Montserrat **** */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans Regular'), local('OpenSans-Regular'), url('../fonts/vendor/google-fonts/Open-sans/Open-sans-latin-italic-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: local('Open Sans SemiBold Italic'), local('OpenSans-SemiBoldItalic'), url('../fonts/vendor/google-fonts/Open-sans/Open-sans-latin-italic-600.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* **** Raleway **** */
+@font-face {
+  font-family: 'Raleway';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Raleway Italic'), local('Raleway-Italic'), url('../fonts/vendor/google-fonts/Raleway/Raleway-latin-italic-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Raleway Light'), local('Raleway-Light'), url('../fonts/vendor/google-fonts/Raleway/Raleway-latin-normal-300.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Raleway'), local('Raleway-Regular'), url('../fonts/vendor/google-fonts/Raleway/Raleway-latin-normal-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Raleway SemiBold'), local('Raleway-SemiBold'), url('../fonts/vendor/google-fonts/Raleway/Raleway-latin-normal-600.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* **** Work Sans **** */
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Work Sans'), local('WorkSans-Regular'), url('../fonts/vendor/google-fonts/Work-sans/Work-sans-latin-normal-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Work Sans Medium'), local('WorkSans-Medium'), url('../fonts/vendor/google-fonts/Work-sans/Work-sans-latin-normal-500.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Work Sans SemiBold'), local('WorkSans-SemiBold'), url('../fonts/vendor/google-fonts/Work-sans/Work-sans-latin-normal-600.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* ************************************************************************* */
+/* ------------------------- Defining Constants ---------------------------- */
+/* ************************************************************************* */
+
+// Theme variables
+$primary-color: #000;
+$primary-color-transparent: #000;
+$darkFont1: #404040;
+$darkFont2: #606060;
+$subDarkFont1: #6a7173;
+$tealColor: #00b5ad;
+$footer-font: #E8E8E8;
+
+// Font family
+$Lato: 'Lato', sans-serif;
+$Montserrat: 'Montserrat', sans-serif;
+$Raleway: 'Raleway', sans-serif;
+$OpenSans: 'Open Sans', sans-serif;
+$WorkSans: 'Work Sans', sans-serif;
+
+/* ************************************************************************* */
+/* ---------------------------- Theme Design ------------------------------- */
+/* ************************************************************************* */
+
+@media (min-width: 320px) {
+
+  .segment.mobile-navbar {
+    background: transparent !important;
+    z-index: +1;
+    border-bottom: 1px solid rgba(255, 255, 255, .15) !important;
+    position: absolute;
+    width: 100%;
+    .logo img {
+      width: 105px !important;
+      margin-bottom: -5px !important;
+      margin-left: -5px !important;
+    }
+    .menu {
+      background: transparent !important;
+      .right.menu > .item:last-child {
+        border: 1px solid #fff;
+        .menu.transition {
+          position: absolute;
+          top: 44px;
+          width: 100vw;
+          right: -135%;
+          background-color: rgba(255, 255, 255, .99) !important;
+          z-index: 299;
+          overflow: visible;
+          box-shadow: 5px 0 10px 2px rgba(0, 0, 0, 1);
+          text-align: center;
+          .ui.divider {
+            margin: 0 !important;
+          }
+          .item {
+            color: $darkFont1 !important;
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 1.1em !important;
+            line-height: 2.5em;
+            letter-spacing: 0.2em;
+          }
+          .item.active {
+            border-bottom: 4px solid $tealColor;
+            border-radius: 0;
+          }
+
+        }
+      }
+    }
+  }
+
+  .home-header {
+    height: auto;
+    background-color: #000;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    position: relative !important;
+    width: 100%;
+    top: 0;
+
+    .main-heading {
+      font-family: $Montserrat;
+      font-weight: 600;
+      font-size: 1.8em !important;
+      letter-spacing: -1px;
+      margin-top: 3.3em !important;
+      margin-bottom: 0;
+    }
+
+    .sub-heading {
+      font-family: $Montserrat;
+      font-size: 1.1em !important;
+      margin-top: 0.4em !important;
+      font-weight: 300;
+    }
+    .free-signup-button {
+      font-family: $Montserrat;
+      font-weight: 300;
+      font-size: 0.7em !important;
+      padding: 1.5em;
+      margin-bottom: 2em;
+      margin-top: 1em;
+      a {
+        color: #fff !important
+      }
+    }
+
+  }
+
+  .course-tour {
+    padding: 4em 1em 7em 1em;
+    h3.header {
+      font-family: $Raleway;
+      font-weight: 500;
+      color: $darkFont1;
+      font-size: 1.8em !important;
+    }
+
+    p {
+      font-family: $Montserrat;
+      color: $subDarkFont1;
+      font-weight: 300;
+      font-size: 1.2em !important;
+    }
+
+  }
+  .page-header {
+    min-height: 182px !important;
+    background-color: #000;
+    background-size: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .header {
+      font-family: $Raleway;
+      font-weight: 600;
+      margin-top: 2.6em !important;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+    }
+  }
+  .login-form {
+    height: 100%;
+    margin-top: 3em !important;
+    margin-bottom: 5em !important;
+    padding: 1em !important;
+    margin-right: 0 !important;
+  }
+  .form {
+    .custom-error {
+      font-family: $Montserrat;
+      font-weight: 300;
+      margin: 1em !important;
+      letter-spacing: 0.06em;
+      font-size: 0.85em !important;
+    }
+  }
+  .page-loader {
+    border: none !important;
+    box-shadow: none !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    position: absolute !important;
+    width: 100%;
+    height: 100%;
+    .text.loader {
+      background: #fff !important;
+      /* box-shadow: 0 0 10px rgba(0,0,0,0.1); */
+      width: 250px !important;
+      height: 115px !important;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      line-height: 3em;
+    }
+    .ui.large.loader:before, .ui.large.loader:after {
+      margin: 1em 0em 0em -1.71428571rem !important;
+    }
+  }
+  .footer {
+    background: #000;
+    margin-top: 2em;
+
+  }
+}
+
+// End of Media 320px
+
+@media (min-width: 383px) {
+  .home-header {
+    .main-heading {
+      font-size: 2.2em !important;
+      margin-top: 2.3em !important;
+    }
+
+    .sub-heading {
+      font-size: 1.2em !important;
+      margin-top: 0.2em !important;
+    }
+    .free-signup-button {
+      font-size: 0.8em !important;
+    }
+  }
+}
+
+@media (min-width: 551px) {
+  .home-header {
+    .main-heading {
+      font-size: 2.7em !important;
+    }
+
+    .sub-heading {
+      font-size: 1.4em !important;
+      padding: 0 7%;
+    }
+    .free-signup-button {
+      font-size: 0.8em !important;
+    }
+  }
+
+}
+
+@media (min-width: 620px) {
+  .home-header {
+    .main-heading {
+      font-size: 3.0em !important;
+    }
+
+    .sub-heading {
+      font-size: 1.5em !important;
+    }
+    .free-signup-button {
+      font-size: 0.9em !important;
+    }
+  }
+
+}
+
+@media (min-width: 769px) {
+  .segment.navbar {
+    background: $primary-color-transparent !important;
+    z-index: +1;
+    position: absolute;
+    width: 100%;
+    .menu {
+      border: none !important;
+    }
+    .logo img {
+      width: 110px !important;
+      margin-bottom: -3px !important;
+    }
+    .or {
+      top: 12% !important;
+    }
+  }
+  .home-header {
+    .pretitle {
+      font-family: $Montserrat;
+      font-size: 1.1em !important;
+      letter-spacing: 0.8em;
+      margin-top: 9em !important;
+      font-weight: 300;
+    }
+    .main-heading {
+      font-size: 3.8em !important;
+      margin-top: 0 !important;
+    }
+
+    .sub-heading {
+      font-size: 1.5em !important;
+    }
+    .free-signup-button {
+      margin-bottom: 5em;
+    }
+  }
+
+}
+
+@media (min-width: 992px) {
+  .segment.navbar {
+    .or {
+      top: 11% !important;
+    }
+  }
+  .home-header {
+    .pretitle {
+      font-size: 1.2em !important;
+      margin-top: 11em !important;
+    }
+    .main-heading {
+      font-size: 4em !important;
+      margin-top: 0.2em !important;
+    }
+
+    .sub-heading {
+      font-size: 1.7em !important;
+      padding: 0;
+    }
+    .free-signup-button {
+      margin-bottom: 7em;
+    }
+  }
+
+}
+
+@media (min-width: 1224px) {
+  .home-header {
+    .pretitle {
+      font-size: 1.3em !important;
+      margin-top: 11em !important;
+    }
+    .main-heading {
+      font-size: 4.3em !important;
+      margin-top: 0.2em !important;
+    }
+
+    .sub-heading {
+      font-size: 1.8em !important;
+    }
+    .free-signup-button {
+      margin-bottom: 8em;
+    }
+  }
+
+}
+

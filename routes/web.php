@@ -11,12 +11,7 @@
 |
 */
 
-use App\User;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/test',function(User $user){
-   return $user->all();
-});
+Route::get('{slug}', function() {
+    return view('home');
+})->where('slug', '(?!api)([A-z\d-\/_.]+)?');
