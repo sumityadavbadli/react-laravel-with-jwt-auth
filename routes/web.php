@@ -11,6 +11,7 @@
 |
 */
 
+Route::get('/redirect/{social}','Auth\LoginController@socialLogin')->where('social','twitter|facebook|linkedin|google');
 
 Route::get('{slug}', function() {
     return view('home');

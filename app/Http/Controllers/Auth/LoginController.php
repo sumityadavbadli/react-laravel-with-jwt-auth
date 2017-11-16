@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\User;
+use Socialite;
 
 class LoginController extends Controller
 {
@@ -31,7 +32,7 @@ class LoginController extends Controller
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json([
                     "error" => "invalid_credentials",
-                    "message" => "The user credentials were incorrect."
+                    "message" => "The user credentials were incorrect. "
                 ], 401);
             }
         } catch (JWTException $e) {
@@ -51,5 +52,37 @@ class LoginController extends Controller
 
     }
 
+    public function socialLogin($social)
+    {
+        if ($social == "facebook" || $social == "google" || $social == "linkedin") {
+            return Socialite::driver($social)->stateless()->redirect();
+        } else {
+            return Socialite::driver($social)->redirect();           
+        }
+    }
+
+    public function handleProviderCallback($social)
+    {
+        if ($social == "facebook" || $social == "google" || $social == "linkedin") {
+            $userSocial = Socialite::driver($social)->stateless()->user();
+        } else {
+            $userSocial = Socialite::driver($social)->user();           
+        }
+        
+        $token = $userSocial->token;
+        
+        $user = User::firstOrNew(['email' => $userSocial->getEmail()]);
+
+        if (!$user->id) {
+            $user->fill(["name" => $userSocial->getName(),"password"=>bcrypt(str_random(6))]);
+            $user->save();
+        }
+
+        return response()->json([
+            'user'  => [$user],
+            'userSocial'  => $userSocial,
+            'token' => $token,
+        ],200);
+    }
 
 }

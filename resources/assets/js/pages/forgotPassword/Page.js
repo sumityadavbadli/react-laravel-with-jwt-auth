@@ -21,19 +21,18 @@ class Page extends React.Component {
         super(props);
         this.validator = new Validator({
             email: 'required|email',
-            password: 'required|min:6'
         });
 
         this.state = {
             credentials: {
                 email: '',
-                password: ''
             },
             responseError: {
                 isError: false,
                 code: '',
                 text: ''
             },
+            isSuccess: false,
             isLoading: false,
             errors: this.validator.errorBag
         };
@@ -69,7 +68,15 @@ class Page extends React.Component {
     }
 
     submit(credentials) {
-        this.props.dispatch(AuthService.login(credentials))
+        this.props.dispatch(AuthService.resetPassword(credentials))
+            .then((result)  => {
+                this.setState({
+                    isLoading: false
+                });
+                this.setState({
+                    isSuccess: true,
+                });
+            })
             .catch(({error, statusCode}) => {
                 const responseError = {
                     isError: true,
@@ -81,11 +88,6 @@ class Page extends React.Component {
                     isLoading: false
                 });
             })
-
-    }
-
-    onSocialClick(event, data) {
-       window.location.assign(`redirect/${data.as}`);
     }
 
     componentDidMount(){
@@ -110,7 +112,7 @@ class Page extends React.Component {
                 <PageHeader heading="login"/>
                 <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
                     <Dimmer active inverted>
-                        <Loader size='large'>Authenticating...</Loader>
+                        <Loader size='large'>Resetting Password...</Loader>
                     </Dimmer>
                 </Segment>
 
@@ -121,11 +123,16 @@ class Page extends React.Component {
                 >
                     <Grid.Column style={{maxWidth: '450px'}}>
                         <Header as='h2' color='teal' textAlign='center'>
-                            Login to your account
+                            Reset your password
                         </Header>
                         {this.state.responseError.isError && <Message negative>
                             <Message.Content>
                                 {this.state.responseError.text}
+                            </Message.Content>
+                        </Message>}
+                        {this.state.isSuccess && <Message positive>
+                            <Message.Content>
+                                If the email you entered exists, a reset link has been sent !
                             </Message.Content>
                         </Message>}
                         <Form size='large'>
@@ -135,6 +142,7 @@ class Page extends React.Component {
                                     icon='user'
                                     iconPosition='left'
                                     name='email'
+                                    defaultValue='andstone@gmail.com'
                                     placeholder='E-mail address'
                                     onChange={this.handleChange}
                                     error={errors.has('email')}
@@ -142,35 +150,7 @@ class Page extends React.Component {
                                 {errors.has('email') && <Header size='tiny' className='custom-error' color='red'>
                                     {errors.first('email')}
                                 </Header>}
-                                <Form.Input
-                                    fluid
-                                    icon='lock'
-                                    iconPosition='left'
-                                    name='password'
-                                    placeholder='Password'
-                                    type='password'
-                                    onChange={this.handleChange}
-                                    error={errors.has('password')}
-                                />
-                                {errors.has('password') && <Header size='tiny' className='custom-error' color='red'>
-                                    {errors.first('password')}
-                                </Header>}
-                                <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Login</Button>
-                                <Link to='/forgot-password' replace>Forgot your password?</Link>
-                                 <div className="ui divider"></div>
-                                 <div>Or login with:</div><br/>
-                                <Button onClick={this.onSocialClick.bind(this)} as="facebook" className="ui circular facebook icon button">
-                                  <i className="facebook icon"></i>
-                                </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="twitter" className="ui circular twitter icon button">
-                                  <i className="twitter icon"></i>
-                                </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="linkedin" className="ui circular linkedin icon button">
-                                 <i className="linkedin icon"></i>
-                                </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="google" className="ui circular google plus icon button">
-                                  <i className="google plus icon"></i>
-                                </Button>
+                                <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Reset Password</Button>
                             </Segment>
                         </Form>
                         <Message>
