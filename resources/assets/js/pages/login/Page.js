@@ -84,6 +84,9 @@ class Page extends React.Component {
 
     }
 
+    onSocialClick(event, data) {
+       window.location.assign(`redirect/${data.as}`);
+    }
 
     componentDidMount(){
         this.setState({
@@ -153,6 +156,19 @@ class Page extends React.Component {
                                     {errors.first('password')}
                                 </Header>}
                                 <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Login</Button>
+                                 <div className="ui divider"></div>
+                                <Button onClick={this.onSocialClick.bind(this)} as="facebook" className="ui circular facebook icon button">
+                                  <i className="facebook icon"></i>
+                                </Button>
+                                <Button onClick={this.onSocialClick.bind(this)} as="twitter" className="ui circular twitter icon button">
+                                  <i className="twitter icon"></i>
+                                </Button>
+                                <Button onClick={this.onSocialClick.bind(this)} as="linkedin" className="ui circular linkedin icon button">
+                                 <i className="linkedin icon"></i>
+                                </Button>
+                                <Button onClick={this.onSocialClick.bind(this)} as="google" className="ui circular google plus icon button">
+                                  <i className="google plus icon"></i>
+                                </Button>
                             </Segment>
                         </Form>
                         <Message>

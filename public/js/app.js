@@ -53449,6 +53449,11 @@ var routes = [{
     auth: false,
     component: __WEBPACK_IMPORTED_MODULE_0__pages_home__["a" /* default */]
 }, {
+    path: '/login/:social',
+    exact: false,
+    auth: false,
+    component: __WEBPACK_IMPORTED_MODULE_0__pages_home__["a" /* default */]
+}, {
     path: '/login',
     exact: true,
     auth: false,
@@ -53493,6 +53498,7 @@ var routes = [{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services__ = __webpack_require__(504);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53500,6 +53506,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -53515,6 +53522,33 @@ var Page = function (_React$Component) {
     }
 
     _createClass(Page, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var social = this.props.match.params.social;
+            var params = this.props.location.search;
+
+            setTimeout(function () {
+                var _this2 = this;
+
+                if (params && social) {
+                    this.props.dispatch(__WEBPACK_IMPORTED_MODULE_3__services__["a" /* default */].socialLogin({ params: params, social: social })).catch(function (_ref) {
+                        var error = _ref.error,
+                            statusCode = _ref.statusCode;
+
+                        var responseError = {
+                            isError: true,
+                            code: statusCode,
+                            text: error
+                        };
+                        _this2.setState({ responseError: responseError });
+                        _this2.setState({
+                            isLoading: false
+                        });
+                    });
+                }
+            }.bind(this), 1000);
+        }
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -73051,6 +73085,11 @@ var Page = function (_React$Component) {
             });
         }
     }, {
+        key: 'onSocialClick',
+        value: function onSocialClick(event, data) {
+            window.location.assign('redirect/' + data.as);
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.setState({
@@ -73152,6 +73191,27 @@ var Page = function (_React$Component) {
                                     __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Button */],
                                     { color: 'teal', fluid: true, size: 'large', onClick: this.handleSubmit },
                                     'Login'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'ui divider' }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Button */],
+                                    { onClick: this.onSocialClick.bind(this), as: 'facebook', className: 'ui circular facebook icon button' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'facebook icon' })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Button */],
+                                    { onClick: this.onSocialClick.bind(this), as: 'twitter', className: 'ui circular twitter icon button' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'twitter icon' })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Button */],
+                                    { onClick: this.onSocialClick.bind(this), as: 'linkedin', className: 'ui circular linkedin icon button' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'linkedin icon' })
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Button */],
+                                    { onClick: this.onSocialClick.bind(this), as: 'google', className: 'ui circular google plus icon button' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'google plus icon' })
                                 )
                             )
                         ),
@@ -73188,6 +73248,7 @@ Page.propTypes = {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["login"] = login;
+/* harmony export (immutable) */ __webpack_exports__["socialLogin"] = socialLogin;
 /* harmony export (immutable) */ __webpack_exports__["register"] = register;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Http__ = __webpack_require__(305);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_actions__ = __webpack_require__(114);
@@ -73198,6 +73259,29 @@ function login(credentials) {
     return function (dispatch) {
         return new Promise(function (resolve, reject) {
             __WEBPACK_IMPORTED_MODULE_0__Http__["a" /* default */].post('api/auth/login', credentials).then(function (res) {
+                dispatch(__WEBPACK_IMPORTED_MODULE_1__store_actions__["b" /* authLogin */](res.data));
+                return resolve();
+            }).catch(function (err) {
+                var statusCode = err.response.status;
+                var data = {
+                    error: null,
+                    statusCode: statusCode
+                };
+                if (statusCode === 401 || statusCode === 422) {
+                    // status 401 means unauthorized
+                    // status 422 means unprocessable entity
+                    data.error = err.response.data.message;
+                }
+                return reject(data);
+            });
+        });
+    };
+}
+
+function socialLogin(data) {
+    return function (dispatch) {
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_0__Http__["a" /* default */].post('../api/auth/login/' + data.social + '/callback' + data.params).then(function (res) {
                 dispatch(__WEBPACK_IMPORTED_MODULE_1__store_actions__["b" /* authLogin */](res.data));
                 return resolve();
             }).catch(function (err) {
