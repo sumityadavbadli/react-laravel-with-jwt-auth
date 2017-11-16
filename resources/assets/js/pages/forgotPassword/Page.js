@@ -142,7 +142,6 @@ class Page extends React.Component {
                                     icon='user'
                                     iconPosition='left'
                                     name='email'
-                                    defaultValue='andstone@gmail.com'
                                     placeholder='E-mail address'
                                     onChange={this.handleChange}
                                     error={errors.has('email')}
