@@ -51,6 +51,62 @@ export function socialLogin(data) {
     )
 }
 
+export function resetPassword(credentials) {
+    return dispatch => (
+        new Promise((resolve, reject) => {
+            Http.post('../api/password/email', credentials)
+                .then(res => {
+                    return resolve(res.data);
+                })
+                .catch(err => {
+                    const statusCode = err.response.status;
+                    const data = {
+                        error: null,
+                        statusCode,
+                    };
+                    if (statusCode === 401 || statusCode === 422) {
+                        // status 401 means unauthorized
+                        // status 422 means unprocessable entity
+                        data.error = err.response.data.message;
+                    }
+                    return reject(data);
+                })
+        })
+    )
+}
+
+export function updatePassword(credentials) {
+    return dispatch => (
+        new Promise((resolve, reject) => {
+            Http.post('../../api/password/reset', credentials)
+                .then(res => {
+                    const statusCode = res.data.status;
+                    if (statusCode == 202) {
+                        const data = {
+                            error: res.data.message,
+                            statusCode,
+                        }
+                        return reject(data)
+                    }
+                    return resolve(res);
+                })
+                .catch(err => {
+                    const statusCode = err.response.status;
+                    const data = {
+                        error: null,
+                        statusCode,
+                    };
+                    if (statusCode === 401 || statusCode === 422) {
+                        // status 401 means unauthorized
+                        // status 422 means unprocessable entity
+                        data.error = err.response.data.message;
+                    }
+                    return reject(data);
+                })
+        })
+    )
+}
+
 export function register(credentials) {
     return dispatch => (
         new Promise((resolve, reject) => {
