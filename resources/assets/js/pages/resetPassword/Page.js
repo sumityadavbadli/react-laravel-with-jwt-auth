@@ -1,18 +1,8 @@
 import React from 'react'
-import {
-    Button,
-    Divider,
-    Dimmer,
-    Form,
-    Grid,
-    Header,
-    Icon,
-    Loader,
-    Message,
-    Segment} from 'semantic-ui-react'
+import {Button, Dimmer, Form, Grid, Header, Loader, Message, Segment} from 'semantic-ui-react'
 import {Link, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Validator } from 'ree-validate'
+import {Validator} from 'ree-validate'
 import AuthService from '../../services'
 import PageHeader from '../../common/pageHeader'
 
@@ -20,20 +10,24 @@ class Page extends React.Component {
     constructor(props) {
         super(props);
         this.validator = new Validator({
-            email: 'required|email',
-            password: 'required|min:6'
+            password: 'required|min:6',
+            password_confirmation: 'required|min:6|confirmed:password',
+            token: 'required',
+            email: 'required'
         });
-
         this.state = {
             credentials: {
-                email: '',
-                password: ''
+                password: '',
+                password_confirmation: '',
+                token: this.props.match.params.token,
+                email: this.props.match.params.email.replace("29gnmLTv686QsnV","@")
             },
             responseError: {
                 isError: false,
                 code: '',
                 text: ''
             },
+            isSuccess: false,
             isLoading: false,
             errors: this.validator.errorBag
         };
@@ -44,19 +38,21 @@ class Page extends React.Component {
     handleChange(event) {
         const name = event.target.name;
         const value = event.target.value;
-
         const {credentials} = this.state;
         credentials[name] = value;
+
         this.validator.validate(name, value)
             .then(() => {
                 const {errorBag} = this.validator;
                 this.setState({errors: errorBag, credentials})
-            })
+            });
     }
 
     handleSubmit(event) {
         event.preventDefault();
+
         const {credentials} = this.state;
+
         this.validator.validateAll(credentials)
             .then(success => {
                 if (success) {
@@ -69,7 +65,15 @@ class Page extends React.Component {
     }
 
     submit(credentials) {
-        this.props.dispatch(AuthService.login(credentials))
+        this.props.dispatch(AuthService.updatePassword(credentials))
+            .then((result)  => {
+                this.setState({
+                    isLoading: false
+                });
+                this.setState({
+                    isSuccess: true,
+                });
+            })
             .catch(({error, statusCode}) => {
                 const responseError = {
                     isError: true,
@@ -81,36 +85,25 @@ class Page extends React.Component {
                     isLoading: false
                 });
             })
-
     }
 
-    onSocialClick(event, data) {
-       window.location.assign(`redirect/${data.as}`);
-    }
-
-    componentDidMount(){
+    componentDidMount() {
         this.setState({
             isLoading: false
         });
     }
 
     render() {
-        const { from } = this.props.location.state || { from: { pathname: '/' } };
-        const { isAuthenticated } = this.props;
-
-        if (isAuthenticated) {
-            return (
-                <Redirect to={from}/>
-            )
+        if (this.props.isAuthenticated) {
+            return <Redirect to='/' replace/>
         }
         const {errors} = this.state;
-
         return (
             <div>
-                <PageHeader heading="login"/>
+                <PageHeader heading="Register"/>
                 <Segment className='page-loader' style={{display: this.state.isLoading ? 'block' : 'none'}}>
                     <Dimmer active inverted>
-                        <Loader size='large'>Authenticating...</Loader>
+                        <Loader size='large'>Resetting Password...</Loader>
                     </Dimmer>
                 </Segment>
 
@@ -121,61 +114,48 @@ class Page extends React.Component {
                 >
                     <Grid.Column style={{maxWidth: '450px'}}>
                         <Header as='h2' color='teal' textAlign='center'>
-                            Login to your account
+                            Reset your password
                         </Header>
                         {this.state.responseError.isError && <Message negative>
                             <Message.Content>
                                 {this.state.responseError.text}
                             </Message.Content>
                         </Message>}
+                        {this.state.isSuccess && <Message positive>
+                            <Message.Content>
+                                Reset Successfully ! <Link to='/login' replace>Login</Link> here
+                            </Message.Content>
+                        </Message>}
                         <Form size='large'>
                             <Segment stacked>
-                                <Form.Input
-                                    fluid
-                                    icon='user'
-                                    iconPosition='left'
-                                    name='email'
-                                    placeholder='E-mail address'
-                                    onChange={this.handleChange}
-                                    error={errors.has('email')}
-                                />
-                                {errors.has('email') && <Header size='tiny' className='custom-error' color='red'>
-                                    {errors.first('email')}
-                                </Header>}
                                 <Form.Input
                                     fluid
                                     icon='lock'
                                     iconPosition='left'
                                     name='password'
-                                    placeholder='Password'
+                                    placeholder='New password'
                                     type='password'
                                     onChange={this.handleChange}
-                                    error={errors.has('password')}
                                 />
                                 {errors.has('password') && <Header size='tiny' className='custom-error' color='red'>
                                     {errors.first('password')}
                                 </Header>}
-                                <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Login</Button>
-                                <Link to='/forgot-password' replace>Forgot your password?</Link>
-                                 <div className="ui divider"></div>
-                                 <div>Or login with:</div><br/>
-                                <Button onClick={this.onSocialClick.bind(this)} as="facebook" className="ui circular facebook icon button">
-                                  <i className="facebook icon"></i>
-                                </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="twitter" className="ui circular twitter icon button">
-                                  <i className="twitter icon"></i>
-                                </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="linkedin" className="ui circular linkedin icon button">
-                                 <i className="linkedin icon"></i>
-                                </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="google" className="ui circular google plus icon button">
-                                  <i className="google plus icon"></i>
-                                </Button>
+                                <Form.Input
+                                    fluid
+                                    icon='refresh'
+                                    iconPosition='left'
+                                    name='password_confirmation'
+                                    placeholder='Confirm new password'
+                                    type='password'
+                                    onChange={this.handleChange}
+                                />
+                                {errors.has('password_confirmation') &&
+                                <Header size='tiny' className='custom-error' color='red'>
+                                    {errors.first('password_confirmation')}
+                                </Header>}
+                                <Button color='teal' fluid size='large' onClick={this.handleSubmit}>Change Password</Button>
                             </Segment>
                         </Form>
-                        <Message>
-                            New to us? <Link to='/register' replace>Register</Link>
-                        </Message>
                     </Grid.Column>
                 </Grid>
             </div>

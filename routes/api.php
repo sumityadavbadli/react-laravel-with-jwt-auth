@@ -13,12 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+Route::group(['prefix' => 'password'],function() {
+	Route::post('/email', 'Auth\ForgotPasswordController@getResetToken');
+	Route::post('/reset', 'Auth\ResetPasswordController@reset');
+});
+
 Route::group(['prefix'=> 'auth'],function(){
     Route::post('/register','Auth\RegisterController@register');
     Route::post("/login",'Auth\LoginController@login');
+    Route::post('/login/{social}/callback','Auth\LoginController@handleProviderCallback')->where('social','twitter|facebook|linkedin|google|');
 });
 
 Route::middleware(['jwt_auth'])->group(function(){
