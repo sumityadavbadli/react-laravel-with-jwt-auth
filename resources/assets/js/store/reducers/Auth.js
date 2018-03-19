@@ -53,7 +53,7 @@ const checkAuth = (state) =>{
         isAdmin : localStorage.getItem('is_admin'),
     });
     if(state.isAuthenticated){
-        Http.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+        Http.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwt_token')}`;
     }
     return state;
 };
