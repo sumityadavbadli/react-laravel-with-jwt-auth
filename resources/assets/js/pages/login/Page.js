@@ -85,7 +85,7 @@ class Page extends React.Component {
     }
 
     onSocialClick(event, data) {
-       window.location.assign(`redirect/${data.as}`);
+       window.location.assign(`redirect/${data.service}`);
     }
 
     componentDidMount(){
@@ -159,17 +159,17 @@ class Page extends React.Component {
                                 <Link to='/forgot-password' replace>Forgot your password?</Link>
                                  <div className="ui divider"></div>
                                  <div>Or login with:</div><br/>
-                                <Button onClick={this.onSocialClick.bind(this)} as="facebook" className="ui circular facebook icon button">
-                                  <i className="facebook icon"></i>
+                                <Button onClick={this.onSocialClick.bind(this)} service="facebook" className="ui circular facebook icon button">
+                                  <Icon className="facebook icon" />
                                 </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="twitter" className="ui circular twitter icon button">
-                                  <i className="twitter icon"></i>
+                                <Button onClick={this.onSocialClick.bind(this)} service="twitter" className="ui circular twitter icon button">
+                                  <Icon className="twitter icon" />
                                 </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="linkedin" className="ui circular linkedin icon button">
-                                 <i className="linkedin icon"></i>
+                                <Button onClick={this.onSocialClick.bind(this)} service="linkedin" className="ui circular linkedin icon button">
+                                 <Icon className="linkedin icon" />
                                 </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="google" className="ui circular google plus icon button">
-                                  <i className="google plus icon"></i>
+                                <Button onClick={this.onSocialClick.bind(this)} service="google" className="ui circular google plus icon button">
+                                  <Icon className="google plus icon" />
                                 </Button>
                             </Segment>
                         </Form>
