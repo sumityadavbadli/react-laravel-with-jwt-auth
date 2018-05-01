@@ -28,7 +28,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
-    "ree-validate": "^1.0.15",
+    "ree-validate": "^3.0.2",
     "semantic-ui-react": "^0.79.0"
   }
 }
