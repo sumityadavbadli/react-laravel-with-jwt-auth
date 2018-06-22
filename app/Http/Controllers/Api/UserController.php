@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -20,7 +21,7 @@ class UserController extends Controller
         $user = $this->user->create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => bcrypt($request->get('password'))
+            'password' => Hash::make($request->get('password'))
         ]);
 
         return response()->json(['status'=>true,'message'=>'User created successfully','data'=>$user]);

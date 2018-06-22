@@ -12,14 +12,14 @@ import {
     Segment} from 'semantic-ui-react'
 import {Link, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Validator } from 'ree-validate'
+import ReeValidate from 'ree-validate'
 import AuthService from '../../services'
 import PageHeader from '../../common/pageHeader'
 
 class Page extends React.Component {
     constructor(props) {
         super(props);
-        this.validator = new Validator({
+        this.validator = new ReeValidate({
             email: 'required|email',
             password: 'required|min:6'
         });
@@ -35,7 +35,7 @@ class Page extends React.Component {
                 text: ''
             },
             isLoading: false,
-            errors: this.validator.errorBag
+            errors: this.validator.errors
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -44,14 +44,14 @@ class Page extends React.Component {
     handleChange(event) {
         const name = event.target.name;
         const value = event.target.value;
-
+        const { errors } = this.validator;
         const {credentials} = this.state;
         credentials[name] = value;
+
         this.validator.validate(name, value)
             .then(() => {
-                const {errorBag} = this.validator;
-                this.setState({errors: errorBag, credentials})
-            })
+                this.setState({errors, credentials})
+            });
     }
 
     handleSubmit(event) {
@@ -85,7 +85,7 @@ class Page extends React.Component {
     }
 
     onSocialClick(event, data) {
-       window.location.assign(`redirect/${data.as}`);
+       window.location.assign(`redirect/${data.service}`);
     }
 
     componentDidMount(){
@@ -159,17 +159,17 @@ class Page extends React.Component {
                                 <Link to='/forgot-password' replace>Forgot your password?</Link>
                                  <div className="ui divider"></div>
                                  <div>Or login with:</div><br/>
-                                <Button onClick={this.onSocialClick.bind(this)} as="facebook" className="ui circular facebook icon button">
-                                  <i className="facebook icon"></i>
+                                <Button onClick={this.onSocialClick.bind(this)} service="facebook" className="ui circular facebook icon button">
+                                  <Icon className="facebook icon" />
                                 </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="twitter" className="ui circular twitter icon button">
-                                  <i className="twitter icon"></i>
+                                <Button onClick={this.onSocialClick.bind(this)} service="twitter" className="ui circular twitter icon button">
+                                  <Icon className="twitter icon" />
                                 </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="linkedin" className="ui circular linkedin icon button">
-                                 <i className="linkedin icon"></i>
+                                <Button onClick={this.onSocialClick.bind(this)} service="linkedin" className="ui circular linkedin icon button">
+                                 <Icon className="linkedin icon" />
                                 </Button>
-                                <Button onClick={this.onSocialClick.bind(this)} as="google" className="ui circular google plus icon button">
-                                  <i className="google plus icon"></i>
+                                <Button onClick={this.onSocialClick.bind(this)} service="google" className="ui circular google plus icon button">
+                                  <Icon className="google plus icon" />
                                 </Button>
                             </Segment>
                         </Form>
