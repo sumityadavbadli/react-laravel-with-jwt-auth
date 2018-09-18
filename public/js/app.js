@@ -18333,14 +18333,28 @@ var Symbol = __WEBPACK_IMPORTED_MODULE_0__root_js__["a" /* default */].Symbol;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux_thunk__ = __webpack_require__(494);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux_thunk___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_redux_thunk__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_redux_persist__ = __webpack_require__(495);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_persist_lib_storage__ = __webpack_require__(922);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_persist_lib_storage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_redux_persist_lib_storage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_redux_persist_lib_stateReconciler_hardSet__ = __webpack_require__(925);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_redux_persist_lib_stateReconciler_hardSet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_redux_persist_lib_stateReconciler_hardSet__);
 
 
 
 
 
 
-var store = Object(__WEBPACK_IMPORTED_MODULE_0_redux__["e" /* createStore */])(__WEBPACK_IMPORTED_MODULE_2__reducers__["a" /* default */], Object(__WEBPACK_IMPORTED_MODULE_0_redux__["d" /* compose */])(Object(__WEBPACK_IMPORTED_MODULE_0_redux__["a" /* applyMiddleware */])(__WEBPACK_IMPORTED_MODULE_3_redux_thunk___default.a, __WEBPACK_IMPORTED_MODULE_1_redux_logger___default.a)));
-Object(__WEBPACK_IMPORTED_MODULE_4_redux_persist__["a" /* persistStore */])(store);
+
+
+var persistConfig = {
+    key: 'root',
+    storage: __WEBPACK_IMPORTED_MODULE_5_redux_persist_lib_storage___default.a,
+    stateReconciler: __WEBPACK_IMPORTED_MODULE_6_redux_persist_lib_stateReconciler_hardSet___default.a
+};
+
+var persistedReducer = Object(__WEBPACK_IMPORTED_MODULE_4_redux_persist__["a" /* persistReducer */])(persistConfig, __WEBPACK_IMPORTED_MODULE_2__reducers__["a" /* default */]);
+
+var store = Object(__WEBPACK_IMPORTED_MODULE_0_redux__["e" /* createStore */])(persistedReducer, Object(__WEBPACK_IMPORTED_MODULE_0_redux__["d" /* compose */])(Object(__WEBPACK_IMPORTED_MODULE_0_redux__["a" /* applyMiddleware */])(__WEBPACK_IMPORTED_MODULE_3_redux_thunk___default.a, __WEBPACK_IMPORTED_MODULE_1_redux_logger___default.a)));
+Object(__WEBPACK_IMPORTED_MODULE_4_redux_persist__["b" /* persistStore */])(store);
 /* harmony default export */ __webpack_exports__["a"] = (store);
 
 /***/ }),
@@ -52468,11 +52482,11 @@ exports['default'] = thunk;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__persistReducer__ = __webpack_require__(148);
-/* unused harmony reexport persistReducer */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__persistReducer__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__persistCombineReducers__ = __webpack_require__(497);
 /* unused harmony reexport persistCombineReducers */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__persistStore__ = __webpack_require__(499);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__persistStore__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__persistStore__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createMigrate__ = __webpack_require__(500);
 /* unused harmony reexport createMigrate */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransform__ = __webpack_require__(501);
@@ -76578,7 +76592,7 @@ var Page = function (_React$Component) {
             name: 'required|min:3',
             email: 'required|email',
             password: 'required|min:6',
-            password_confirmation: 'required|min:6|confirmed:password'
+            password_confirmation: 'required|min:6'
         });
         _this.state = {
             credentials: {
@@ -76629,12 +76643,32 @@ var Page = function (_React$Component) {
 
             this.validator.validateAll(credentials).then(function (success) {
                 if (success) {
-                    _this3.setState({
-                        isLoading: true
-                    });
-                    _this3.submit(credentials);
+                    // Manually verify the password confirmation fields
+                    if (_this3.passwordConfirmation(credentials)) {
+
+                        _this3.setState({
+                            isLoading: true
+                        });
+                        _this3.submit(credentials);
+                    } else {
+                        var responseError = {
+                            isError: true,
+                            code: 401,
+                            text: "Oops! Password confirmation didn't match"
+                        };
+                        _this3.setState({ responseError: responseError });
+                    }
                 }
             });
+        }
+    }, {
+        key: 'passwordConfirmation',
+        value: function passwordConfirmation(credentials) {
+            if (credentials.password == credentials.password_confirmation) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }, {
         key: 'submit',
@@ -76643,10 +76677,19 @@ var Page = function (_React$Component) {
 
             this.props.dispatch(__WEBPACK_IMPORTED_MODULE_5__services__["a" /* default */].register(credentials)).then(function (result) {
                 _this4.setState({
-                    isLoading: false
-                });
-                _this4.setState({
-                    isSuccess: true
+                    isLoading: false,
+                    isSuccess: true,
+                    credentials: {
+                        name: '',
+                        email: '',
+                        password: '',
+                        password_confirmation: ''
+                    },
+                    responseError: {
+                        isError: false,
+                        code: '',
+                        text: ''
+                    }
                 });
             }).catch(function (_ref) {
                 var error = _ref.error,
@@ -77832,6 +77875,151 @@ var mapStateToProps = function mapStateToProps(state) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 901 */,
+/* 902 */,
+/* 903 */,
+/* 904 */,
+/* 905 */,
+/* 906 */,
+/* 907 */,
+/* 908 */,
+/* 909 */,
+/* 910 */,
+/* 911 */,
+/* 912 */,
+/* 913 */,
+/* 914 */,
+/* 915 */,
+/* 916 */,
+/* 917 */,
+/* 918 */,
+/* 919 */,
+/* 920 */,
+/* 921 */,
+/* 922 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _createWebStorage = __webpack_require__(923);
+
+var _createWebStorage2 = _interopRequireDefault(_createWebStorage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _createWebStorage2.default)('local');
+
+/***/ }),
+/* 923 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = createWebStorage;
+
+var _getStorage = __webpack_require__(924);
+
+var _getStorage2 = _interopRequireDefault(_getStorage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function createWebStorage(type) {
+  var storage = (0, _getStorage2.default)(type);
+  return {
+    getItem: function getItem(key) {
+      return new Promise(function (resolve, reject) {
+        resolve(storage.getItem(key));
+      });
+    },
+    setItem: function setItem(key, item) {
+      return new Promise(function (resolve, reject) {
+        resolve(storage.setItem(key, item));
+      });
+    },
+    removeItem: function removeItem(key) {
+      return new Promise(function (resolve, reject) {
+        resolve(storage.removeItem(key));
+      });
+    }
+  };
+}
+
+/***/ }),
+/* 924 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.default = getStorage;
+
+
+function noop() {}
+
+var noopStorage = {
+  getItem: noop,
+  setItem: noop,
+  removeItem: noop
+};
+
+function hasStorage(storageType) {
+  if ((typeof self === 'undefined' ? 'undefined' : _typeof(self)) !== 'object' || !(storageType in self)) {
+    return false;
+  }
+
+  try {
+    var storage = self[storageType];
+    var testKey = 'redux-persist ' + storageType + ' test';
+    storage.setItem(testKey, 'test');
+    storage.getItem(testKey);
+    storage.removeItem(testKey);
+  } catch (e) {
+    if (true) console.warn('redux-persist ' + storageType + ' test failed, persistence will be disabled.');
+    return false;
+  }
+  return true;
+}
+
+function getStorage(type) {
+  var storageType = type + 'Storage';
+  if (hasStorage(storageType)) return self[storageType];else {
+    if (true) {
+      console.error('redux-persist failed to create sync storage. falling back to memory storage.');
+    }
+    return noopStorage;
+  }
+}
+
+/***/ }),
+/* 925 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = hardSet;
+
+
+/*
+  hardSet: 
+    - hard set incoming state
+*/
+
+function hardSet(inboundState) {
+  return inboundState;
+}
 
 /***/ })
 /******/ ]);

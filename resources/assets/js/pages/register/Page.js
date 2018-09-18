@@ -13,7 +13,7 @@ class Page extends React.Component {
             name: 'required|min:3',
             email: 'required|email',
             password: 'required|min:6',
-            password_confirmation: 'required|min:6|confirmed:password'
+            password_confirmation: 'required|min:6'
         });
         this.state = {
             credentials: {
@@ -56,23 +56,56 @@ class Page extends React.Component {
         this.validator.validateAll(credentials)
             .then(success => {
                 if (success) {
-                    this.setState({
-                        isLoading: true
-                    });
-                    this.submit(credentials);
+                    // Manually verify the password confirmation fields
+                    if(this.passwordConfirmation(credentials)){
+
+                        this.setState({
+                            isLoading: true
+                        });
+                        this.submit(credentials);
+                    }
+                    else{
+                        const responseError = {
+                            isError: true,
+                            code: 401,
+                            text: "Oops! Password confirmation didn't match"
+                        };
+                        this.setState({responseError});
+                    }
+
                 }
             });
+    }
+
+
+    passwordConfirmation(credentials){
+        if(credentials.password == credentials.password_confirmation){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     submit(credentials) {
         this.props.dispatch(AuthService.register(credentials))
             .then((result)  => {
                 this.setState({
-                    isLoading: false
-                });
-                this.setState({
+                    isLoading: false,
                     isSuccess: true,
+                    credentials: {
+                        name: '',
+                        email: '',
+                        password: '',
+                        password_confirmation: ''
+                    },
+                    responseError : {
+                        isError: false,
+                        code: '',
+                        text: ''
+                    }
                 });
+
             })
             .catch(({error, statusCode}) => {
                 const responseError = {
